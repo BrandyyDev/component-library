@@ -1,6 +1,6 @@
-import { InputHTMLAttributes } from 'react'
+import { InputHTMLAttributes, useId } from 'react'
 import { useTracking } from '../../hooks/useTracking'
-import { ContainerInput, StyledInput } from './input.styled';
+import { ContainerInput, StyledInput } from './input.styled'
 
 type Variant = 'default' | 'error' | 'success'
 
@@ -13,9 +13,11 @@ export const Input = ({
   label,
   variant = 'default',
   disabled,
+  id,
   ...rest
 }: InputProps) => {
   const { track } = useTracking()
+  const inputId = id || useId()
 
   const handleFocus = () => {
     track('Input', variant, 'focus')
@@ -23,9 +25,15 @@ export const Input = ({
 
   return (
     <ContainerInput>
-      {label && <label>{label}</label>}
-      <StyledInput variant={variant} disabled={disabled} onFocus={handleFocus} {...rest} />
+      {label && <label htmlFor={inputId}>{label}</label>}
+      <StyledInput
+        id={inputId}
+        aria-label={label}
+        variant={variant}
+        disabled={disabled}
+        onFocus={handleFocus}
+        {...rest}
+      />
     </ContainerInput>
   )
 }
-

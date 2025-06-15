@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from '../components/Input/Input'
 import { Button } from '../components/Button/Button'
 import { AuthWrapper, AuthCard, Title, ContainerButtons } from '../styles/auth.styled'
@@ -34,6 +34,13 @@ export default function LoginPage() {
   const handleRegister = () => {
     router.push('/register')
   }
+
+    useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      router.replace('/dashboard') 
+    }
+  }, [])
 
   return (
     <AuthWrapper>

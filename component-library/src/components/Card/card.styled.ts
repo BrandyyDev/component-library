@@ -6,6 +6,14 @@ export const WrapperCard = styled.div<{ bordered: boolean }>`
   padding: ${spacing.md};
   border-radius: ${borderRadius.md};
   background: ${colors.background};
+
+
+`
+
+export const ImgCard = styled.img`
+       width: 100%;      
+    height: auto;     
+    object-fit: cover;
 `
 
 export const HeaderCard = styled.div`

@@ -6,6 +6,7 @@ interface ConfigEndpoints {
     components: {
         stats: string;
         track: string;
+        export: string;
     };
 }
 
@@ -24,6 +25,7 @@ const config: Config = {
         components: {
             stats: '/components/stats',
             track: '/components/track',
+            export: '/components/export',
         },
     },
 };

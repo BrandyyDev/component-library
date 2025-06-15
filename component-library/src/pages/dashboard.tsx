@@ -1,15 +1,10 @@
 
+'use client'
 import { withAuth } from '../hoc/withAuth'
 import { removeToken } from '../utils/auth'
-
 import { useRouter } from 'next/router'
-
-'use client'
 import React, { useState } from 'react'
-import { Button } from '../components/Button/Button'
-import { Input } from '../components/Input/Input'
-import { Modal } from '../components/Modal/Modal'
-import { Card } from '../components/Card/Card'
+import { Button, Input, Modal, Card } from '../components'
 import useSWR from 'swr'
 import {
   PageWrapper,
@@ -21,7 +16,7 @@ import {
   StyledSelect,
   StyledCheckbox,
 } from '../styles/home.styled'
-
+ import { getToken } from '../utils/auth' 
 import config from '../config/config'
 const fetcher = (url: string) => fetch(url).then(res => res.json())
 
@@ -43,10 +38,34 @@ function Dashboard() {
   }
   const { data: stats } = useSWR(`${apiBaseUrl}${component.components.stats}`, fetcher, { refreshInterval: 3000 })
 
+
+
+const handleExport = async () => {
+  const token = getToken() 
+  const res = await fetch(`${apiBaseUrl}${component.components.export}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
+  if (res.ok) {
+    const data = await res.json()
+    alert('Datos exportados correctamente: ' + JSON.stringify(data))
+  } else {
+    const error = await res.json()
+    alert('Error al exportar datos: ' + (error.message || res.status))
+  }
+}
+
+
+
   return (
     <PageWrapper>
       <DemoContainer>
         <Title>Componentes</Title>
+      <Button variant="danger" onClick={logout}>Cerrar Sesión</Button>
 
         <Section>
           <SectionTitle>Button</SectionTitle>
@@ -133,12 +152,13 @@ function Dashboard() {
 
         <Section>
           <SectionTitle>📊 Estadísticas en tiempo real</SectionTitle>
+      <Button variant="primary" onClick={handleExport}>Exportar Datos</Button>
+
           <pre style={{ background: '#f1f5f9', padding: '1rem', borderRadius: 12 }}>
             {JSON.stringify(stats, null, 2)}
           </pre>
         </Section>
       </DemoContainer>
-      <Button variant="danger" onClick={logout}>Cerrar Sesión</Button>
     </PageWrapper>
 
   )

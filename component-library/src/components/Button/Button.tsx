@@ -29,7 +29,7 @@ export const Button = ({
   }
 
   return (
-    <StyledButton variant={variant} disabled={disabled} onClick={handleClick} {...rest}>
+    <StyledButton variant={variant} disabled={disabled || loading} onClick={handleClick} {...rest}>
       {loading ? 'Cargando…' : (
         <>
           {icon && <span>{icon}</span>}
